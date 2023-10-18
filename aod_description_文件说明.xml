@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<MIUI_Theme_Values>
+	<!-- -必写-类型；百变框架 maml_style -->
+	<theme_type>maml_style</theme_type>
+
+	<!-- 是否支持用户控制开关；参数说明：1 支持，0 不支持，默认为0 -->
+	
+	<!-- 必写-显示电量开关 -->
+	<support_battery>1</support_battery>
+	<!-- 必写-显示通知开关 -->
+	<support_notification>1</support_notification>
+	<!-- 支持显示农历开关 -->
+	<support_lunar_calendar>1</support_lunar_calendar>
+	
+	
+	<!-- 开关初始状态：以下内容不写则默认初始开关为关闭态 -->
+	
+	<!-- 开关初始状态：显示电量-开启 -->
+	<battery_enable>1</battery_enable>
+	<!-- 开关初始状态：显示通知-开启 -->
+	<notification_enable>1</notification_enable>
+	<!-- 显示农历-开关初始开启 -->
+	<lunar_calendar_enable>1</lunar_calendar_enable>
+
+</MIUI_Theme_Values>

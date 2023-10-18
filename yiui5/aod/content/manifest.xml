@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Aod frameRate="60" screenWidth="1080" version="1">
+
+	<!-- aod模块注意事项；1.动画触发放在下方 Trigger 中；2.动画时长不超过4s，超过部分将会被强制停止；3.息屏中 动画仅播放一次，此后每分钟仅做 时间 的刷新，不可加动画 -->
+	<ExternalCommands>
+		<Trigger action="init">
+			<ExternCommand command="animationState" strPara="'init'" />
+		</Trigger>
+		<Trigger action="play">
+			<AnimationCommand target="timeAni" command="play" />
+			<AnimationCommand target="endAni" command="play" />
+		</Trigger>
+
+	</ExternalCommands>
+
+
+	<Var name="timeAni">
+		<VariableAnimation loop="false" initPause="true">
+			<AniFrame value="0" time="0" easeType="CubicEaseOut"/>
+			<AniFrame value="1" time="1000"/>
+		</VariableAnimation>
+	</Var>
+	<Var name="endAni">
+		<VariableAnimation name="endAnimation" loop="false" initPause="true">
+			<AniFrame value="0" time="0" />
+			<AniFrame value="1" time="1000"/>
+			<Triggers>
+				<Trigger action="end" condition="#endAnimation.current_frame==-1">
+					<!-- 有动画的aod，一定要在 最长的动画 结束之后给系统发个命令，注意：此命令只能存在一个，请勿使用多个 -->
+					<ExternCommand command="animationState" strPara="'finish'" />
+				</Trigger>
+			</Triggers>
+		</VariableAnimation>
+	</Var>
+
+	<Var name="boxSize" type="number" expression="650" />
+
+
+	<Group x="540" y="400*#timeAni" align="center" alignV="center"  w="#boxSize" h="#boxSize*#timeAni"  alpha="#timeAni*255" >
+		
+		<ImageChars name="timeImage" x="#boxSize/2"  y="342" align="center"   alignV="center" src="images/num.png" string="formatDate('HH:mm MM.dd',#time_sys)" charNameMap=".spot,:colon,%pct, space"/>
+
+
+	</Group>
+
+
+	<!-- 通知图标之间的间隙 -->
+	<Var name="noticeApp" type="string[]" const="true" expression="" values="'com.android.contacts,com.android.contacts.activities.TwelveKeyDialer','com.android.mms','com.android.email','com.android.thememanager'" />
+	<Array y="900+int((#timeAni-1)*140)-!#lunar_calendar_enable*60-!#battery_enable*60" count="4" indexName="_i" alpha="#timeAni*255" visibility="#notification_enable">
+		<Image x="540+#_i*80-80/2*(4-1)" w="50" h="50" align="center" srcType="ApplicationIcon" srcExp="@noticeApp[#_i]" visibility="#preview_mode" />
+		<Image x="540+#_i*80-80/2*#noticeCount" w="50" h="50" align="center" srcType="ApplicationIcon" srcExp="@noticePkg[#_i]" visibility="#_i{=#noticeCount**!#preview_mode" />
+	</Array>
+</Aod>
